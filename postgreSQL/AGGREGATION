@@ -12,3 +12,335 @@ SELECT SUM(price) AS total_discount_price
 FROM products
 WHERE price<=10;
 
+---AVG() - ZWRACA ŚREDNIĄ WARTOŚCI W KOLUMNE
+
+SELECT AVG(score) as average_score
+FROM students;       --(70 + 75 + 65) / 3 = 70
+
+SELECT ROUND(AVG(score)) as average_score
+FROM students;
+
+
+CREATE TABLE scores (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    score INTEGER,
+    subject TEXT
+);
+
+select round(AVG(score)) as average_math_score
+from scores
+where subject = 'math'
+
+---COUNT() - ZWRACA LICZBĘ WIERSZY W KOLUMNIE
+
+SELECT COUNT(*)    -- count(*) bierze pod uwagę też NULL
+FROM likes
+WHERE tweet_id = 1;
+
+SELECT COUNT(DISTINCT liked_by_id)  --NULL nie jest brane pod uwagę
+FROM likes
+WHERE tweet_id = 1; --liczy ilość unikalnych użytkowników, którzy polubili tweet
+
+SELECT COUNT(DISTINCT tweet_id, liked_by_id)
+FROM likes;
+
+
+CREATE TABLE books (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    title TEXT,
+    author TEXT
+);
+
+INSERT INTO books (title, author) VALUES
+    ('The Great Gatsby', 'F. Scott Fitzgerald'),
+    ('To Kill a Mockingbird', 'Harper Lee'),
+    ('Woolbur', 'Harper Lee'),
+    ('1984', 'George Orwell'),
+    ('Pride and Prejudice', 'Jane Austen'),
+    ('The Catcher in the Rye', 'J.D. Salinger'),
+    ('The Lord of the Rings', 'J.R.R. Tolkien'),
+    ('Harry Potter and the Philosopher''s Stone', 'J.K. Rowling'),
+    ('Harry Potter and the Chamber of Secrets', 'J.K. Rowling'),
+    ('The Shining', 'Stephen King'),
+    ('The Da Vinci Code', 'Dan Brown'),
+    ('The Alchemist', 'Paulo Coelho'),
+    ('The Picture of Dorian Gray', 'Oscar Wilde');
+
+SELECT COUNT(DISTINCT author) AS unique_authors
+FROM books
+WHERE LENGTH(author) < 12;
+
+---MAX() - ZWRACA NAJWYŻSZĄ WARTOŚĆ W KOLUMNIE
+
+SELECT MAX(price) FROM products;
+
+---MIN() - ZWRACA NAJNIŻSZĄ WARTOŚĆ W KOLUMNIE
+
+SELECT MIN(price) FROM products;
+
+SELECT MIN(price), MAX(price), COUNT(price)  --count(price) zlicza ilość wartości w kolumnie price, czyli np 2 a nie sumuje
+FROM products;
+
+SELECT MIN(score) AS min_score, MAX(score) AS max_score, ROUND(AVG(score)) AS avg_score
+FROM scores
+WHERE region = 'EU';
+
+--- GROUP BY - GRUPUJE WYNIKI ZAPYTANIA NA PODSTAWIE WARTOŚCI W KOLUMNIE
+
+SELECT author, COUNT(*)
+FROM books
+GROUP BY author;
+
+
+CREATE TABLE olympic_medals (
+    country TEXT,
+    athlete_name TEXT,
+    gold INTEGER,
+    silver INTEGER,
+    bronze INTEGER
+);
+
+INSERT INTO olympic_medals (country, athlete_name, gold, silver, bronze) VALUES
+('USA', 'John', 0, 1, 0),
+('CAN', 'Jesse', 1, 0, 0),
+('MEX', 'Juan', 0, 0, 1),
+('BRA', 'Rafael', 0, 1, 0),
+('USA', 'Jill', 0, 0, 1),
+('USA', 'Jack', 1, 1, 1),
+('UK', 'James', 0, 0, 2),
+('CAN', 'Joseph', 1, 0, 1);
+
+SELECT country, SUM(gold) AS gold_medals, SUM(silver) AS silver_medals, SUM(bronze) AS bronze_medals
+FROM olympic_medals
+GROUP BY country;
+
+--- GROUP BY z wieloma kolumnami - GRUPUJE WYNIKI ZAPYTANIA NA PODSTAWIE WARTOŚCI W KOLUMNE
+
+SELECT course_name, semester, AVG(grade)
+FROM grades
+GROUP BY course_name, semester;
+
+CREATE TABLE olympic_medals (
+    country TEXT,
+    year INTEGER,
+    category TEXT,
+    gold INTEGER,
+    silver INTEGER,
+    bronze INTEGER
+);
+
+INSERT INTO olympic_medals (country, year, category, gold, silver, bronze) VALUES
+    -- 2020 data
+    ('USA', 2020, 'Athletics', 12, 15, 10),
+    ('China', 2020, 'Athletics', 9, 11, 13),
+    ('Japan', 2020, 'Athletics', 7, 9, 11),
+    ('Australia', 2020, 'Athletics', 6, 8, 10),
+    ('France', 2020, 'Athletics', 5, 7, 9),
+    ('Italy', 2020, 'Athletics', 4, 6, 8),
+    ('Canada', 2020, 'Athletics', 3, 5, 7),
+    
+    ('USA', 2020, 'Swimming', 16, 13, 11),
+    ('China', 2020, 'Swimming', 10, 12, 9),
+    ('Japan', 2020, 'Swimming', 8, 10, 12),
+    ('Australia', 2020, 'Swimming', 11, 9, 7),
+    ('France', 2020, 'Swimming', 6, 8, 10),
+    ('Italy', 2020, 'Swimming', 5, 7, 9),
+    ('Canada', 2020, 'Swimming', 4, 6, 8),
+    
+    ('USA', 2020, 'Gymnastics', 8, 6, 7),
+    ('China', 2020, 'Gymnastics', 7, 9, 5),
+    ('Japan', 2020, 'Gymnastics', 5, 7, 9),
+    ('Australia', 2020, 'Gymnastics', 4, 6, 8),
+    ('France', 2020, 'Gymnastics', 3, 5, 7),
+    ('Italy', 2020, 'Gymnastics', 2, 4, 6),
+    ('Canada', 2020, 'Gymnastics', 1, 3, 5),
+    
+    -- 2021 data
+    ('USA', 2021, 'Athletics', 14, 16, 12),
+    ('China', 2021, 'Athletics', 11, 13, 15),
+    ('Japan', 2021, 'Athletics', 9, 11, 13),
+    ('Australia', 2021, 'Athletics', 8, 10, 12),
+    ('France', 2021, 'Athletics', 7, 9, 11),
+    ('Italy', 2021, 'Athletics', 6, 8, 10),
+    ('Canada', 2021, 'Athletics', 5, 7, 9),
+    
+    ('USA', 2021, 'Swimming', 18, 15, 13),
+    ('China', 2021, 'Swimming', 12, 14, 11),
+    ('Japan', 2021, 'Swimming', 10, 12, 14),
+    ('Australia', 2021, 'Swimming', 13, 11, 9),
+    ('France', 2021, 'Swimming', 8, 10, 12),
+    ('Italy', 2021, 'Swimming', 7, 9, 11),
+    ('Canada', 2021, 'Swimming', 6, 8, 10),
+    
+    ('USA', 2021, 'Gymnastics', 10, 8, 9),
+    ('China', 2021, 'Gymnastics', 9, 11, 7),
+    ('Japan', 2021, 'Gymnastics', 7, 9, 11),
+    ('Australia', 2021, 'Gymnastics', 6, 8, 10),
+    ('France', 2021, 'Gymnastics', 5, 7, 9),
+    ('Italy', 2021, 'Gymnastics', 4, 6, 8),
+    ('Canada', 2021, 'Gymnastics', 3, 5, 7);
+
+SELECT country, year, SUM(gold + silver + bronze) AS total_medals
+FROM olympic_medals
+GROUP BY country, year
+ORDER BY year, country;
+
+--- GROUP BY / DISTINCT - GRUPUJE WYNIKI ZAPYTANIA NA PODSTAWIE UNIKALNYCH WARTOŚCI W KOLUMNIE
+*zamiennie DISTINCT i GROUP BY
+
+CREATE TABLE products (
+    product_id INTEGER,
+    product_name TEXT,
+    store_name TEXT
+);
+
+INSERT INTO products (product_id, product_name, store_name) VALUES
+    (1, 'Laptop', 'Amazon'),
+    (2, 'Phone', 'Best Buy'),
+    (3, 'Tablet', 'Walmart'),
+    (4, 'Laptop', 'Amazon'),
+    (5, 'Phone', 'Best Buy'),
+    (6, 'Tablet', 'Walmart'),
+    (7, 'Laptop', 'Amazon'),
+    (8, 'Washing Machine', 'Best Buy'),
+    (9, 'Laptop', 'Walmart'),
+    (10, 'Phone', 'Amazon');
+
+""" return all distinct combinations of product_name and store_name from the products table.
+The result should be sorted by product_name and store_name in ascending order."""
+
+SELECT product_name, store_name
+FROM products
+GROUP BY product_name, store_name
+ORDER BY product_name, store_name;
+
+--- HAVING - FILTRUJE GRUPY WYNIKÓW ZAPYTANIA NA PODSTAWIE WARUNKÓW
+
+SELECT book_name
+FROM book_sales
+GROUP BY book_name
+HAVING SUM(copies_sold) > 500;
+
+
+CREATE TABLE olympic_medals (
+    country TEXT,
+    year INTEGER,
+    total_medals INTEGER
+);
+
+INSERT INTO olympic_medals (country, year, total_medals) VALUES
+    ('USA', 2021, 22),
+    ('China', 2021, 38),
+    ('UK', 2021, 77),
+    ('Russia', 2021, 20),
+    ('USA', 2022, 20),
+    ('China', 2022, 68),
+    ('UK', 2022, 24),
+    ('Russia', 2022, 16),
+    ('USA', 2023, 29),
+    ('China', 2023, 49),
+    ('UK', 2023, 20),
+    ('Russia', 2023, 14);
+
+"""return only the names of the countries that have won more than 100 medals in total, across all years.
+The result should be sorted by the countries in descending order."""
+
+SELECT country
+FROM olympic_medals
+GROUP BY country
+HAVING SUM(total_medals) > 100
+ORDER BY country DESC;
+
+--- EXECUTION ORDER:
+
+SELECT book_name
+FROM book_sales
+WHERE book_name LIKE 'A%'
+GROUP BY book_name
+HAVING SUM(copies_sold) > 100
+ORDER BY book_name
+LIMIT 1;
+
+!!! KOMPUTER ODCZUTUJE TO JAKO:
+
+FROM -SKĄD BIERZE INFORMACJE
+WHERE - FILTRUJE WIERSZE KTÓRE SPEŁNIAJĄ WARUNEK
+GROUP BY - GRUPUJE WYNIKI ZAPYTANIA NA PODSTAWIE WARTOŚCI W KOLUMNIE
+HAVING - FILTRUJE GRUPY WYNIKÓW ZAPYTANIA NA PODSTAWIE WARUNKÓW
+ORDER BY - SORTUJE WYNIKI ZAPYTANIA
+LIMIT - OGRANICZA LICZBĘ ZWRACANYCH WIERSZY
+SELECT - WYBIERA KOLUMNY KTÓRE MAJĄ BYĆ ZWRÓCONE
+
+"""Your task is to write a query that returns three columns in this order: country, year, and total_medals. The total_medals column should be the sum of all the medals won by the country in that year.
+The result should not include the 'Gymnastics' category.
+The result should only include results where the total_medals is greater than 20.
+The result should be sorted by the total_medals in descending order.
+The result should only include at most 5 rows."""
+
+CREATE TABLE olympic_medals (
+    country TEXT,
+    year INTEGER,
+    category TEXT,
+    gold INTEGER,
+    silver INTEGER,
+    bronze INTEGER
+);
+
+INSERT INTO olympic_medals (country, year, category, gold, silver, bronze) VALUES
+    -- 2020 data
+    ('USA', 2020, 'Athletics', 12, 15, 10),
+    ('China', 2020, 'Athletics', 9, 11, 13),
+    ('Japan', 2020, 'Athletics', 7, 9, 11),
+    ('Australia', 2020, 'Athletics', 6, 8, 10),
+    ('France', 2020, 'Athletics', 5, 7, 9),
+    ('Italy', 2020, 'Athletics', 4, 6, 8),
+    ('Canada', 2020, 'Athletics', 3, 5, 7),
+    
+    ('USA', 2020, 'Swimming', 16, 13, 11),
+    ('China', 2020, 'Swimming', 10, 12, 9),
+    ('Japan', 2020, 'Swimming', 8, 10, 12),
+    ('Australia', 2020, 'Swimming', 11, 9, 7),
+    ('France', 2020, 'Swimming', 6, 8, 10),
+    ('Italy', 2020, 'Swimming', 5, 7, 9),
+    ('Canada', 2020, 'Swimming', 4, 6, 8),
+    
+    ('USA', 2020, 'Gymnastics', 8, 6, 7),
+    ('China', 2020, 'Gymnastics', 7, 9, 5),
+    ('Japan', 2020, 'Gymnastics', 5, 7, 9),
+    ('Australia', 2020, 'Gymnastics', 4, 6, 8),
+    ('France', 2020, 'Gymnastics', 3, 5, 7),
+    ('Italy', 2020, 'Gymnastics', 2, 4, 6),
+    ('Canada', 2020, 'Gymnastics', 1, 3, 5),
+    
+    -- 2021 data
+    ('USA', 2021, 'Athletics', 14, 16, 12),
+    ('China', 2021, 'Athletics', 11, 13, 15),
+    ('Japan', 2021, 'Athletics', 9, 11, 13),
+    ('Australia', 2021, 'Athletics', 8, 10, 12),
+    ('France', 2021, 'Athletics', 7, 9, 11),
+    ('Italy', 2021, 'Athletics', 6, 8, 10),
+    ('Canada', 2021, 'Athletics', 5, 7, 9),
+    
+    ('USA', 2021, 'Swimming', 18, 15, 13),
+    ('China', 2021, 'Swimming', 12, 14, 11),
+    ('Japan', 2021, 'Swimming', 10, 12, 14),
+    ('Australia', 2021, 'Swimming', 13, 11, 9),
+    ('France', 2021, 'Swimming', 8, 10, 12),
+    ('Italy', 2021, 'Swimming', 7, 9, 11),
+    ('Canada', 2021, 'Swimming', 6, 8, 10),
+    
+    ('USA', 2021, 'Gymnastics', 10, 8, 9),
+    ('China', 2021, 'Gymnastics', 9, 11, 7),
+    ('Japan', 2021, 'Gymnastics', 7, 9, 11),
+    ('Australia', 2021, 'Gymnastics', 6, 8, 10),
+    ('France', 2021, 'Gymnastics', 5, 7, 9),
+    ('Italy', 2021, 'Gymnastics', 4, 6, 8),
+    ('Canada', 2021, 'Gymnastics', 3, 5, 7);
+
+SELECT country, year, SUM(gold + silver + bronze) AS total_medals
+FROM olympic_medals
+WHERE category != 'Gymnastics'
+GROUP BY country, year
+HAVING SUM(gold + silver + bronze) > 20
+ORDER BY SUM(gold + silver + bronze) DESC
+LIMIT 5;
