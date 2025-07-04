@@ -1,0 +1,48 @@
+---CREATE TABLE - KOMENDA OD KTÓREJ TWORZY SIĘ TABELĘ Z BAZĄ DANYCH
+
+CREATE TABLE users (
+    name TEXT,
+    age INTEGER,
+    join_date DATE
+);
+
+***name jest typu TEXT
+***age jest typu INTEGER
+***join_date jest typu DATE
+
+---DEFAULT - WSTAWIA WARTOŚĆ DOMYŚLNĄ DO TABELI
+
+CREATE TABLE users (
+    name TEXT DEFAULT 'Anonymous',
+    email TEXT,
+    age INTEGER DEFAULT 18
+);
+
+---ALTER TABLE - SŁUŻY DO DODAWANIA, ZMIENIANIA I USUWANIA COLUMN Z TABELI
+--ADD - DODAJE KOLUMNE
+--RENAME COLUMN - ZMIENIA  NAZWE KOLUMNY
+--DROP COLUMN - USUWA KOLUMNĘ
+
+
+CREATE TABLE users (
+    name TEXT
+);
+
+-- Add a new column called `age` of type `INTEGER` to the table
+ALTER TABLE users ADD COLUMN age INTEGER;
+
+-- Modify the `name` column to be called `full_name` instead
+ALTER TABLE users RENAME COLUMN name TO full_name;
+
+-- Remove / drop the `name` column from the table
+ALTER TABLE users DROP COLUMN name;
+
+
+---DROP TABLE - USUWA CAŁĄ TABELĘ
+
+CREATE TABLE users (
+    name TEXT,
+    age INTEGER
+);
+
+DROP TABLE users;

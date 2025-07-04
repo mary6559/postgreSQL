@@ -1,0 +1,48 @@
+---UPDATE - update'ujemy tabelę która istnieje i zmieniamy kolumnę, która istnieje
+*SET - ustawia wartość kolumny
+
+UPDATE users
+SET username = 'anonymous'; - wszystkie wartości w kolumnie username zostaną zmienione na 'anonymous'
+
+UPDATE users
+SET username = 'anonymous', email = 'unavailable', last_login = CURRENT_TIMESTAMP;
+
+UPDATE students
+SET age = NULL;
+
+---UPDATE WHERE - aktualizuje tylko te wiersze, które spełniają warunek
+
+UPDATE users
+SET email = 'new_email@example.com'
+WHERE id = 1;
+
+*można użyć żeby 'wyczyścić' dane które są błędne
+
+UPDATE players
+SET score = 0
+WHERE score < 0;
+
+UPDATE users
+SET username = 'anonymous'
+WHERE username IS NULL;  - nie można napisać username = NULL, bo NULL nie jest równe niczemu
+
+---RETURNING - ZWRACA WARTOŚCI PO WYKONANIU OPERACJI, NA PRZYKŁAD PO WSTAWIENIU NOWEGO WIERSZA
+
+UPDATE bank_accounts
+SET status = 'VIP'
+WHERE 100000>balance AND balance>10000
+RETURNING id, balance, status;   - nie można użyć 10000<balance<10000, bo nie jest to poprawna składnia (nie rozumie matematyki SQL)
+
+--- UPDATE CONSTRAINTS - aktualizuje kolumnę, która ma ograniczenia
+*UNIQUE
+*NOT NULL
+*PRIMARY KEY
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name TEXT NOT NULL
+);
+
+!!!!!!!! UPDATE users
+SET name = NULL;  !!!!!!! - nie można ustawić NULL w kolumnie, która ma NOT NULL
+

@@ -1,0 +1,58 @@
+---DELETE FROM - USUWA CAŁĄ TABELĘ/KOLUMNĘ
+
+DELETE FROM users;
+
+---DELETE WHERE - USUWA WIERSZE, KTÓRE SPEŁNIAJĄ WARUNEK
+
+DELETE FROM users
+WHERE username IS NULL;  -- nie można użyć username IS NULL, bo nie jest to poprawna składnia (NULL nie jest równe niczemu)
+
+DELETE FROM students
+WHERE age<18 OR name LIKE 'A%';
+
+---DELETE RETURNING - ZWRACA WARTOŚCI PO USUNIĘCIU WIERSZY
+*zwraca wartości kolumn, które zostały usunięte
+
+DELETE FROM bank_accounts
+WHERE balance<0 AND last_transaction_date<'2024-01-01'
+RETURNING id, name;
+
+DELETE FROM users
+WHERE username IS NULL;
+RETURNING id, username, email;
+
+---DELETE CONSTRAINTS - USUWA WIERSZE, KTÓRE MAJĄ OGRANICZENIA
+*UNIQUE
+*NOT NULL
+*PRIMARY KEY
+
+CREATE TABLE classes (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE students (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE enrollments (
+    id INTEGER PRIMARY KEY,
+    student_id INTEGER REFERENCES students(id),
+    class_id INTEGER REFERENCES classes(id)
+);
+
+DELETE FROM enrollments;
+
+DELETE FROM classes;
+
+DELETE FROM students;  --CHODZI O KOLEJNOŚĆ USUWANIA, ŻEBY NIE WYSTĄPIŁ BŁĄD
+
+---TRUNCATE TABLE- USUWA WSZYSTKIE WIERSZE Z TABELI, ALE NIE USUWA STRUKTURY TABELI ANI JEJ OGRANICZEŃ
+
+TRUNCATE TABLE users; - jest bardziej wydajne niż DELETE, ponieważ nie rejestruje usuniętych wierszy w dzienniku transakcji
+
+-- or
+
+DELETE FROM users;
+DROP TABLE users;

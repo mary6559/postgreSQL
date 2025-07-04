@@ -1,0 +1,147 @@
+---SELECT - WYBIERA KOLUMNY Z TABELI ---
+* WYBIERA WSZYSTKIE KOLUMNY
+
+SELECT *
+FROM users;
+
+SELECT * FROM users;
+
+---FROM - OKREŚLA Z JAKIEJ TABELI MA BYĆ WYBRANA KOLUMNA
+
+CREATE TABLE coding_problems (
+    id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name TEXT,
+    difficulty TEXT,
+    description TEXT
+);
+
+SELECT id, name, difficulty
+FROM coding_problems;
+
+---AS - ZMIENIA NAZWĘ KOLUMNY W WYNIKU ZAPYTANIA
+
+SELECT id AS problem_id, name AS problem_name, difficulty AS problem_difficulty
+FROM coding_problems;
+
+---WHERE - FILTRUJE WYNIKI ZAPYTANIA
+
+SELECT id, name, difficulty
+FROM coding_problems
+WHERE difficulty = 'Easy';
+
+---WHERE NOT - FILTRUJE WYNIKI ZAPYTANIA, KTÓRE NIE SPEŁNIAJĄ WARUNKU
+*!= - NIE RÓWNA SIĘ
+*<> - NIE RÓWNA SIĘ (alternatywna składnia)
+
+
+SELECT id, name, difficulty
+FROM coding_problems
+WHERE difficulty != 'Easy';
+
+SELECT id, name, difficulty
+FROM coding_problems
+WHERE difficulty <> 'Easy';
+
+---WHERE COMPARISON - PORÓWNUJE WARTOŚCI W KOLUMNIE Z INNĄ WARTOŚCIĄ
+*< - MNIEJSZE NIŻ
+*<= - MNIEJSZE LUB RÓWNE NIŻ
+*> - WIĘKSZE NIŻ
+*>= - WIĘKSZE LUB RÓWNE NIŻ
+
+SELECT *
+FROM users
+WHERE age > 20; -- Users older than 20
+
+SELECT *
+FROM users
+WHERE age >= 20; -- Users 20 years or older
+
+SELECT *
+FROM users
+WHERE age < 20; -- Users younger than 20
+
+---IS NULL/ IS NOT NULL - SPRAWDZA CZY WARTOŚĆ JEST PUSTA
+
+SELECT *
+FROM coding_problems
+WHERE difficulty IS NULL;
+
+SELECT *
+FROM coding_problems
+WHERE difficulty IS NOT NULL;
+
+---DISTINCT - ZWRACA UNIKATOWE WARTOŚCI Z KOLUMNY, USUWA POWTÓRZENIA
+
+SELECT DISTINCT author
+FROM comments;
+
+---LIKE - SPRAWDZA CZY WARTOŚĆ W KOLUMNIE ZAWIERA OKREŚLONY WZÓR
+*% - ZNAK WILDCARD, KTÓRY ZASTĘPUJE DOWOLNĄ LICZBĘ ZNAKÓW
+*_ - ZNAK WILDCARD, KTÓRY ZASTĘPUJE JEDEN ZNAK
+
+SELECT *
+FROM comments
+WHERE author LIKE 'N%';
+
+SELECT *
+FROM comments
+WHERE author LIKE 'N__%'; - żeby autor miał conajmniej 3 znaki
+
+SELECT name
+FROM cities
+WHERE name LIKE '%ai%'; - żeby znajdywało się w nazwie "ai" gdziekolwiek
+
+---IN() - SPRAWDZA CZY WARTOŚĆ W KOLUMNIE JEST RÓWNA JEDNEJ Z WARTOŚCI W PODANYM ZBIORZE
+
+SELECT *
+FROM cities
+WHERE name IN ('New York', 'London', 'Paris');
+
+---BETWEEN - SPRAWDZA CZY WARTOŚĆ W KOLUMNIE JEST POMIĘDZY DWOMA WARTOŚCIAMI
+*wartości są włączone do zakresu
+*AND - ŁĄCZY WARUNKI, ŻEBY BYŁY SPEŁNIONE RAZEM
+
+SELECT *
+FROM comments
+WHERE id BETWEEN 1 AND 3;
+
+SELECT *
+FROM comments
+WHERE posted_at BETWEEN '2024-01-01' AND '2024-01-31';
+
+SELECT DISTINCT country
+FROM cities
+WHERE population BETWEEN 1000000 and 10000000;
+
+---LOGICAL OPERATORS - ŁĄCZY WARUNKI W ZAPYTANIU
+*AND - ŁĄCZY WARUNKI, ŻEBY BYŁY SPEŁNIONE RAZEM
+*OR - ŁĄCZY WARUNKI, ŻEBY BYŁA SPEŁNIONA PRZYNAJMNIEJ JEDEN Z NICH
+
+SELECT name
+FROM cities
+WHERE (country = 'USA' OR country = 'Canada') AND population >= 1000000;
+
+SELECT name
+FROM cities
+WHERE (population<1000000 OR population>10000000) AND name NOT LIKE 'C%';
+
+---ORDER BY - SORTUJE WYNIKI ZAPYTANIA
+*DESC - SORTUJE WYNIKI W PORZĄDKU MALEJĄCYM
+*ASC - SORTUJE WYNIKI W PORZĄDKU ROSNĄCY (domyślnie)
+
+SELECT name, population, country
+FROM cities
+WHERE population > 19000000
+ORDER BY population DESC;
+
+---LIMIT - OGRANICZA LICZBĘ ZWRACANYCH WIERSZY
+*LIMIT 10 - zwraca maksymalnie 10 wierszy
+
+SELECT name
+FROM cities
+WHERE population > 1000000
+ORDER BY population DESC
+LIMIT 5;    -zwróci nazwy 5 miast gdzie populacja jest powyżej 1000000 posortowane przez populacje w malejącej kolejności 
+
+
+

@@ -1,0 +1,14 @@
+---SUM() - ZWRACA SUMĘ WARTOŚCI W KOLUMNE
+
+SELECT SUM(price) as total_price
+FROM cart
+WHERE customer_id = 1;
+
+SELECT SUM(price * quantity) as total_price
+FROM cart
+WHERE customer_id = 1; -- MNOŻY PRICE PRZEZ ILOŚĆ I SUMUJE JAKO TOTAL_PRICE
+
+SELECT SUM(price) AS total_discount_price 
+FROM products
+WHERE price<=10;
+

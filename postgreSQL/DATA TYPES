@@ -1,0 +1,106 @@
+---BOOLEANS - MOGĄ BYĆ TYLKO TRUE I FALSE
+
+CREATE TABLE users (
+    is_active BOOLEAN
+);
+
+-Insert true values
+INSERT INTO users (is_active) VALUES 
+  (TRUE),
+  (true),
+  ('t'),
+  ('y'),
+  ('YES'),
+  ('on'),
+  ('1');
+
+-Insert false values
+INSERT INTO users (is_active) VALUES 
+  (FALSE),
+  (false),
+  ('f'),
+  ('N'),
+  ('no'),
+  ('OFF'),
+  ('0');
+
+  ---NUMBERS - MOGĄ BYĆ CAŁKOWITE LUB ZMIENNOPRZECINKOWE
+
+  -SMALLINT - liczba całkowita 2 bajtowa, przedział -32768 do 32768
+
+  -INTEGER - liczba całkowita 4 bajtowa, przedział -2147483648 do 2147483648
+
+  -BIGINT - liczba całkowita 8 bajtowa, przedział -9223372036854775808 do 9223372036854775807
+
+  -FLOAT - liczba zmiennoprzecinkowa 4 bajtowa
+
+  -DOUBLE PRECISION - liczba zmiennoprzecinkowa 8 bajtowa
+
+  -NUMERIC/DECIMAL - liczba zmiennoprzecinkowa o dowolnej precyzji, żeby ustalić ile ma mieć cyfr i miejsc po przecinku
+
+
+---STRINGS - TEKST, KTÓRY MOŻE MIEĆ RÓŻNE DŁUGOŚCI
+
+-CHAR(n) - stała długość tekstu, n to maksymalna liczba znaków, np. CHAR(10) oznacza 10 znaków
+
+-VARCHAR(n) - zmienna długość tekstu, n to maksymalna liczba znaków, np. VARCHAR(50) oznacza maksymalnie 50 znaków
+
+-TEXT - tekst o dowolnej długości, nie ma ograniczenia długości
+
+
+---DATES AND TIMES - DATY I CZASY
+
+-DATE - data w formacie YYYY-MM-DD, np. '2023-10-01'
+
+-TIME - czas w formacie HH:MM:SS, np. '12:30:00'
+
+-TIMESTAMP - data i czas w formacie YYYY-MM-DD HH:MM:SS, np. '2023-10-01 12:30:00'
+
+-TIMESTAMPTZ - data i czas z uwzględnieniem strefy czasowej, np. '2023-10-01 12:30:00+02'
+
+---ARRAYS - kolekcja elementów tego samego typu, np. tablica liczb całkowitych
+
+*INTEGER[]
+*TEXT[]
+*BOOLEAN[]
+
+---ENUM() - DEFINIUJE ZBIÓR WARTOŚCI, KTÓRE MOGĄ BYĆ PRZYPISANE DO KOLUMNY
+--AS - jako
+--CREATE TYPE - tworzy typ
+
+CREATE TYPE status AS ENUM ('active', 'inactive', 'pending');
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    status status
+);
+
+---AUTOECRINCEMENT - AUTOMATYCZNE ZWIĘKSZANIE WARTOŚCI KOLUMNY:
+
+---SERIAL - typ danych, który automatycznie zwiększa wartość przy każdym wstawieniu nowego rekordu(stare, nie używa sie)
+
+---IDENTITY - nowy typ danych, który automatycznie zwiększa wartość przy każdym wstawieniu nowego rekordu, jest bardziej elastyczny niż SERIAL i pozwala na większą kontrolę nad generowaniem wartości
+
+---SEQUENCE - można samemu tworzyć sekwencje, które będą generować unikalne wartości dla kolumny
+*nextval('nazwa_sekwencji') - zwraca następną wartość sekwencji
+--GENERATED ALWAYS AS IDENTITY - kolumna, która jest automatycznie wypełniana unikalnymi wartościami przy każdym wstawieniu rekordu
+
+CREATE SEQUENCE example_id_seq START WITH 10 INCREMENT BY 10;
+
+CREATE TABLE example (
+    id_0 INTEGER PRIMARY KEY,
+    id_1 SERIAL,
+    id_2 INTEGER GENERATED ALWAYS AS IDENTITY,
+    id_3 INTEGER DEFAULT nextval('example_id_seq')
+);
+
+---UUID - UNIKALNY IDENTYFIKATOR, KTÓRY MOŻE BYĆ UŻYWANY JAKO KLUCZ GŁÓWNY, ZAWSZE UNIKALNY, MA 16 BAJTÓW
+*550e8400-e29b-41d4-a716-446655440000
+*uuid_generate_v4() - funkcja generująca losowy UUID (najpopularniejsza)
+
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT
+);
+
