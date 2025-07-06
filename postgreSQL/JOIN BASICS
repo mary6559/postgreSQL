@@ -84,6 +84,6 @@ JOIN movies m ON r.movie_id = m.id;
 
 SELECT p.name AS player_name, t.name AS team_name, c.salary
 FROM players p
-JOIN teams t on t.id = p.team_id                                     --zamiennie można p.team_id = t.id
+JOIN teams t ON t.id = p.team_id                                     --zamiennie można p.team_id = t.id
 JOIN contracts c ON p.id = c.player_id
 ORDER BY salary DESC;
