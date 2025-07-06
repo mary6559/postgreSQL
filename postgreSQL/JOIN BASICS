@@ -28,7 +28,7 @@ ORDER BY students.name;
 *AS - służy do tworzenia aliasów dla tabel, można je ominąć
 
 SELECT s.name, c.course_name
-FROM students s
+FROM students s                                                 --to to samo co students AS s
 INNER JOIN course_registrations c ON s.id = c.student_id;
 
 
