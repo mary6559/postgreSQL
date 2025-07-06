@@ -1,0 +1,89 @@
+--- JOIN - łączy tabele na podstawie warunku
+
+SELECT users.user_id, name, order_id, total_price
+FROM users
+CROSS JOIN orders
+WHERE users.user_id = orders.user_id;
+
+----- CROSS JOIN - łączy wszystkie wiersze z jednej tabeli z wszystkimi wierszami z drugiej tabeli
+
+SELECT *
+FROM users
+CROSS JOIN orders;
+
+----- INNER JOIN - łączy wiersze z dwóch tabel, które spełniają warunek
+*ON - określa warunek łączenia
+
+SELECT *
+FROM users
+INNER JOIN orders ON users.user_id = orders.user_id;
+
+
+SELECT students.name, course_registrations.course_name
+FROM students
+INNER JOIN course_registrations ON students.id = course_registrations.student_id
+ORDER BY students.name;
+
+----- TABLE ALIAS - skrót dla tabeli, aby uprościć zapytania
+*AS - służy do tworzenia aliasów dla tabel, można je ominąć
+
+SELECT s.name, c.course_name
+FROM students s
+INNER JOIN course_registrations c ON s.id = c.student_id;
+
+
+SELECT u.name, u.email, e.company_name, e.job_title
+FROM users AS u
+INNER JOIN  employment_records AS e ON u.id = e.user_id
+ORDER BY e.company_name;
+
+----- LEFT JOIN - zwraca wszystkie wiersze z lewej tabeli i dopasowane wiersze z prawej tabeli (jeżeli nie istnieje w prawej tabeli to zwróci NULL, jeżeli w prawej istnieje a w lewej nie, to nic nie zwróci)
+
+SELECT u.name, e.company_name, e.job_title
+FROM users u
+LEFT JOIN employment_records e ON u.id = e.employee_id
+ORDER BY e.company_name;
+
+SELECT h.name AS human_name, p.name AS pet_name
+FROM humans AS h
+LEFT JOIN pets AS p ON h.id = p.owner_id
+ORDER BY human_name, pet_name;
+
+--- RIGHT JOIN - zwraca wszystkie wiersze z prawej tabeli i dopasowane wiersze z lewej tabeli (jeżeli nie istnieje w lewej tabeli to zwróci NULL, jeżeli w lewej istnieje a w prawej nie, to nic nie zwróci)
+
+SELECT e.company_name, e.job_title, u.name
+FROM employment_records e
+RIGHT JOIN users u ON e.employee_id = u.id
+
+SELECT pokemon_types.name  AS type, pokemon.name AS pokemon, pokemon_types.weakness
+FROM pokemon
+RIGHT JOIN pokemon_types ON pokemon.type_id = pokemon_types.id
+ORDER BY pokemon_types.name;
+
+--- FULL JOIN - zwraca wszystkie wiersze z obu tabel, dopasowane wiersze z obu tabel (jeżeli nie istnieje w jednej tabeli to zwróci NULL, jeżeli w drugiej istnieje a w pierwszej nie, to też zwróci NULL)
+
+SELECT e.name as employee_name, d.name as department_name
+FROM employees e
+FULL JOIN departments d ON e.department_id = d.id;
+
+
+SELECT pt.name AS type, p.name AS pokemon, pt.weakness
+FROM pokemon p
+FULL JOIN pokemon_types pt ON pt.id = p.type_id
+ORDER BY type;
+
+--- MULTI JOIN - łączenie wielu tabel
+
+SELECT u.name, m.title, r.rating
+FROM users u
+JOIN ratings r ON u.id = r.user_id
+JOIN movies m ON r.movie_id = m.id;
+
+
+!!!! JOIN == INNER JOIN
+
+SELECT p.name AS player_name, t.name AS team_name, c.salary
+FROM players p
+JOIN teams t on t.id = p.team_id
+JOIN contracts c ON p.id = c.player_id
+ORDER BY salary DESC;
