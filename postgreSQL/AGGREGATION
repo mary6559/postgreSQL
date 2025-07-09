@@ -15,7 +15,9 @@ WHERE price<=10;
 ---AVG() - ZWRACA ŚREDNIĄ WARTOŚCI W KOLUMNE
 
 SELECT AVG(score) as average_score
-FROM students;       --(70 + 75 + 65) / 3 = 70
+FROM students;                                              --> (70 + 75 + 65) / 3 = 70
+
+---ROUND() - ZAOKRĄGLA WYNIK
 
 SELECT ROUND(AVG(score)) as average_score
 FROM students;
@@ -27,19 +29,19 @@ CREATE TABLE scores (
     subject TEXT
 );
 
-select round(AVG(score)) as average_math_score
-from scores
-where subject = 'math'
+SELECT round(AVG(score)) as average_math_score
+FROM scores
+WHERE subject = 'math'
 
 ---COUNT() - ZWRACA LICZBĘ WIERSZY W KOLUMNIE
 
-SELECT COUNT(*)    -- count(*) bierze pod uwagę też NULL
+SELECT COUNT(*)                                             --> count(*) bierze pod uwagę też NULL
 FROM likes
 WHERE tweet_id = 1;
 
-SELECT COUNT(DISTINCT liked_by_id)  --NULL nie jest brane pod uwagę
+SELECT COUNT(DISTINCT liked_by_id)                          --> NULL nie jest brane pod uwagę
 FROM likes
-WHERE tweet_id = 1; --liczy ilość unikalnych użytkowników, którzy polubili tweet
+WHERE tweet_id = 1;                                         --> liczy ilość unikalnych użytkowników, którzy polubili tweet
 
 SELECT COUNT(DISTINCT tweet_id, liked_by_id)
 FROM likes;
@@ -78,7 +80,7 @@ SELECT MAX(price) FROM products;
 
 SELECT MIN(price) FROM products;
 
-SELECT MIN(price), MAX(price), COUNT(price)  --count(price) zlicza ilość wartości w kolumnie price, czyli np 2 a nie sumuje
+SELECT MIN(price), MAX(price), COUNT(price)                      --> count(price) zlicza ilość wartości w kolumnie price, czyli np 2 a nie sumuje
 FROM products;
 
 SELECT MIN(score) AS min_score, MAX(score) AS max_score, ROUND(AVG(score)) AS avg_score
