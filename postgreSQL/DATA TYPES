@@ -24,7 +24,7 @@ INSERT INTO users (is_active) VALUES
   ('OFF'),
   ('0');
 
-  ---NUMBERS - MOGĄ BYĆ CAŁKOWITE LUB ZMIENNOPRZECINKOWE
+  ---NUMBERS - MOGĄ BYĆ CAŁKOWITE LUB ZMIENNOPRZECINKOWE (nie ma TINYINT, DOUBLE PRECISION)
 
   -SMALLINT - liczba całkowita 2 bajtowa, przedział -32768 do 32768
 
@@ -58,13 +58,13 @@ INSERT INTO users (is_active) VALUES
 
 -TIMESTAMPTZ - data i czas z uwzględnieniem strefy czasowej, np. '2023-10-01 12:30:00+02'
 
----ARRAYS - kolekcja elementów tego samego typu, np. tablica liczb całkowitych
+---ARRAYS - kolekcja elementów tego samego typu, np. tablica liczb całkowitych (NIE MA W SQL SERVER, UŻYWA SIĘ TABLE)
 
 *INTEGER[]
 *TEXT[]
 *BOOLEAN[]
 
----ENUM() - DEFINIUJE ZBIÓR WARTOŚCI, KTÓRE MOGĄ BYĆ PRZYPISANE DO KOLUMNY
+---ENUM() - DEFINIUJE ZBIÓR WARTOŚCI, KTÓRE MOGĄ BYĆ PRZYPISANE DO KOLUMNY (NIE MA W SQL SERVER, UŻYWA SIĘ CHECK CONSTRAINT)
 --AS - jako
 --CREATE TYPE - tworzy typ
 
@@ -76,7 +76,7 @@ CREATE TABLE users (
     status status
 );
 
----AUTOECRINCEMENT - AUTOMATYCZNE ZWIĘKSZANIE WARTOŚCI KOLUMNY:
+---AUTOINCREMENT - AUTOMATYCZNE ZWIĘKSZANIE WARTOŚCI KOLUMNY:
 
 ---SERIAL - typ danych, który automatycznie zwiększa wartość przy każdym wstawieniu nowego rekordu(stare, nie używa sie)
 
