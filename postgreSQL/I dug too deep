@@ -1,0 +1,68 @@
+Mam poprawny kod do zadania z łączeniem tabel: 
+
+SELECT v.customer_id, COUNT(v.visit_id) AS count_no_trans
+FROM visits v
+LEFT JOIN transactions t
+    ON v.visit_id = t.visit_id
+WHERE t.transaction_id IS NULL
+GROUP BY v.customer_id;
+
+I bardzo chciałam wiedzieć jak je zrobić bez użycia COUNT():
+
+SELECT v.customer_id, 
+       ARRAY_LENGTH(array_agg(DISTINCT v.visit_id), 1) AS count_no_trans
+FROM visits v
+LEFT JOIN transactions t
+    ON v.visit_id = t.visit_id
+WHERE t.transaction_id IS NULL
+GROUP BY v.customer_id;
+
+ARRAY_AGG() - funkcja agregująca, która zbiera (agreguje) wartości z wielu wierszy w jeden wynik i zwraca je jako tablicę (array)
+
+---PRZYKŁAD---
+
+SELECT customer_id, array_agg(visit_id) AS visit_ids
+FROM visits
+GROUP BY customer_id;
+
+customer_id	     visit_ids
+101	             {1, 2}
+102	             {3}
+103	             {4}
+
+ARRAY_LENGTH(..., 1) - to funkcja, która zwraca długość tablicy, czyli liczbę elementów w tablicy, zwraca pojedynczą liczbę: długość tablicy.
+
+--array_length() jest używane w połączeniu z funkcją array_agg() lub innymi operacjami na tablicach, aby obliczyć liczbę elementów w tablicy.
+
+---KONTYNUACJA PRZYKŁADU---
+
+SELECT customer_id, array_length(array_agg(visit_id), 1) AS visit_count
+FROM visits
+GROUP BY customer_id;
+
+customer_id	    visit_count
+101	            2
+102	            1
+103	            1
+
+-PO CO JEST JEDYNKA W FUNKCJI ARRAY_LENGTH?
+
+array_length(array, dimension) - array: To tablica, której długość chcesz obliczyć, dimension: To numer wymiaru tablicy, którego długość chcesz obliczyć. Może to być 1, 2, 3 itd., w zależności od liczby wymiarów tablicy.
+
+-CHODZI O WYMIAR TABLICY, TO TABLICA JEDNOWYMIAROWA(NAJCZĘSTSZA), SĄ TEŻ DWUWYMIAROWE, 3D, 4D...
+
+---PRZYKŁAD TABLICY 3D---
+
+ARRAY[[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+SELECT array_length(ARRAY[[1, 2, 3], [4, 5, 6], [7, 8, 9]], 1) AS row_count, 
+       array_length(ARRAY[[1, 2, 3], [4, 5, 6], [7, 8, 9]], 2) AS col_count;
+
+-PO CO SĄ?
+
+Reprezentacja tabel: Można używać tablic wielowymiarowych, jeśli chce się przechowywać dane w formie tabeli w jednym polu. Na przykład, zamiast mieć kolumny col1, col2, col3, można użyć tablicy jako jednej kolumny.
+
+Obliczenia matematyczne i analizy: W przypadku analizy danych numerycznych, np. w matematyce czy analizie danych 3D, gdzie ma się dane w postaci macierzy, takie tablice mogą być przydatne.
+
+Przechowywanie złożonych struktur danych: Czasami w aplikacjach lub bazach danych trzeba przechować złożone dane, np. dane z różnych kategorii (np. produkty w magazynie, gdzie każda kategoria ma inne właściwości), wtedy tablice wielowymiarowe pomagają.
+
