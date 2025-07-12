@@ -46,3 +46,35 @@ CREATE TABLE users (
 );
 
 DROP TABLE users;
+
+---Denormalization - Proces, który polega na łączeniu tabel w celu zwiększenia wydajności zapytań kosztem normalizacji danych.
+
+CREATE TABLE orders (
+    user_id INTEGER,
+    user_name TEXT,
+    product_id INTEGER,
+    product_name TEXT,
+    order_id INTEGER
+);
+
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE products (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE orders (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    product_id INTEGER,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+---Foreign Key  ... references - Służy do tworzenia relacji między tabelami, zapewniając integralność danych.
+
